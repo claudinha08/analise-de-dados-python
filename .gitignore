@@ -1,6 +1,0 @@
-# .gitignore — copie este modelo para o seu repositório
-*.pyc
-__pycache__/
-.env
-venv/
-.DS_Store
