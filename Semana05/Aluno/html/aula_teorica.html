@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Semana 05 — NumPy e Pandas</title>
+<style>
+  :root{
+    --red:#CC0000;
+    --red-dark:#990000;
+    --ink:#1a1a2e;
+    --bg:#f7f7fa;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Segoe UI', Roboto, Arial, sans-serif;
+    background:var(--bg);
+    color:#222;
+    line-height:1.6;
+  }
+  .hero{
+    background:linear-gradient(135deg,#0d1b2a,#1b263b,var(--red));
+    color:#fff;
+    padding:60px 24px;
+    text-align:center;
+  }
+  .hero h1{
+    margin:0 0 10px;
+    font-size:2.2rem;
+  }
+  .hero h1 span{ color:#FFD60A; }
+  .hero p{
+    max-width:760px;
+    margin:14px auto 0;
+    font-size:1.05rem;
+    opacity:.92;
+  }
+  .badge{
+    display:inline-block;
+    background:rgba(255,255,255,.15);
+    border:1px solid rgba(255,255,255,.4);
+    border-radius:20px;
+    padding:6px 16px;
+    margin-top:18px;
+    font-size:.9rem;
+  }
+  main{
+    max-width:980px;
+    margin:0 auto;
+    padding:40px 20px 80px;
+  }
+  section{ margin-bottom:48px; }
+  h2{
+    color:var(--red-dark);
+    border-bottom:3px solid var(--red);
+    padding-bottom:8px;
+    font-size:1.5rem;
+  }
+  h3{ color:var(--ink); }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin:18px 0;
+    box-shadow:0 1px 4px rgba(0,0,0,.08);
+  }
+  th, td{
+    border:1px solid #ddd;
+    padding:10px 12px;
+    text-align:left;
+    font-size:.95rem;
+  }
+  th{
+    background:var(--red);
+    color:#fff;
+  }
+  tr:nth-child(even){ background:#fafafa; }
+  .box{
+    background:#fff3f3;
+    border-left:5px solid var(--red);
+    padding:16px 20px;
+    border-radius:6px;
+    margin:18px 0;
+  }
+  .box.tip{
+    background:#F0F7FF;
+    border-left-color:#1565C0;
+  }
+  .qs{
+    background:var(--ink);
+    color:#eee;
+    border-radius:10px;
+    padding:20px 22px;
+    margin:16px 0;
+  }
+  .qs code{
+    background:rgba(255,255,255,.15);
+    color:#E0E0E0;
+    padding:2px 6px;
+    border-radius:4px;
+    font-family:Consolas, monospace;
+  }
+  .qs label{
+    display:block;
+    background:rgba(255,255,255,.06);
+    padding:8px 12px;
+    margin:6px 0;
+    border-radius:6px;
+    cursor:pointer;
+  }
+  .qs label:hover{ background:rgba(255,255,255,.12); }
+  .qs button{
+    background:var(--red);
+    color:#fff;
+    border:none;
+    padding:8px 18px;
+    border-radius:6px;
+    cursor:pointer;
+    margin-top:10px;
+    font-weight:bold;
+  }
+  .qs button:hover{ background:var(--red-dark); }
+  .feedback{
+    margin-top:10px;
+    padding:10px 14px;
+    border-radius:6px;
+    display:none;
+    font-weight:bold;
+  }
+  .feedback.correct{ background:#1b5e20; display:block; }
+  .feedback.wrong{ background:#7a1f1f; display:block; }
+  .ex{
+    background:#F0F7FF;
+    border:1px solid #BBDEFB;
+    border-radius:8px;
+    padding:16px 20px;
+    margin:14px 0;
+  }
+  pre.codeblock{
+    background:var(--ink);
+    color:#E0E0E0;
+    padding:16px 20px;
+    border-radius:8px;
+    overflow-x:auto;
+    font-family:Consolas, monospace;
+    font-size:.9rem;
+    margin:14px 0;
+  }
+  pre.codeblock .c{ color:#8a8aa0; }
+  footer{
+    background:var(--ink);
+    color:#ccc;
+    text-align:center;
+    padding:26px 16px;
+    font-size:.9rem;
+  }
+  footer strong{ color:#fff; }
+  @media (max-width:768px){
+    .hero h1{ font-size:1.6rem; }
+  }
+
+  /* Estrutura de aula: abertura / checagem / fechamento */
+  .abertura{background:#E8F5E9;border-left:5px solid #1B5E20;border-radius:8px;padding:20px 24px;margin:0 0 32px;}
+  .abertura h3{color:#1B5E20;margin:0 0 10px;font-size:1.05rem;}
+  .abertura ul,.fechamento ul{margin:8px 0 0;padding-left:22px;line-height:1.8;}
+  .checagem{background:#FFF3E0;border-left:5px solid #E65100;border-radius:6px;padding:14px 18px;margin:0 0 28px;font-size:.95rem;}
+  .checagem strong{color:#BF360C;display:block;margin-bottom:6px;}
+  .fechamento{background:#E3F2FD;border-left:5px solid #0D47A1;border-radius:8px;padding:20px 24px;margin:0 0 32px;}
+  .fechamento h3{color:#0D47A1;margin:0 0 10px;font-size:1.05rem;}
+  .topo-autor {
+    background: #0d1b2a;
+    color: rgba(255,255,255,0.72);
+    font-size: 0.82em;
+    font-weight: 500;
+    padding: 7px 28px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    letter-spacing: 0.01em;
+  }
+</style>
+</head>
+<body>
+
+<div class="topo-autor">Professor: Cláudio Ferreira Neves - Especialista em Dados</div>
+<div class="hero">
+  <h1>Semana 05 · <span>NumPy e Pandas</span></h1>
+  <p>Unidade Curricular: <strong>Manipulação de Dados com Python e SQL</strong> (150h) — Bloco 3, Semanas 05 e 06 (início do bloco). Você chega às duas bibliotecas mais usadas no mercado por analistas de dados.</p>
+  <span class="badge">3 encontros · 9h · Arrays, broadcasting, Series, DataFrame e groupby</span>
+</div>
+
+<main>
+
+  <section>
+    <h2>Competência da Unidade Curricular</h2>
+    <div class="box tip">
+      "Desenvolver competências em lógica de programação com Python, modelagem de dados com SQL e NoSQL e utilização de bibliotecas específicas para manipulação, transformação e visualização de dados, apoiando processos de análise de dados."
+    </div>
+    <p>Depois de dois blocos construindo a base, você chega à parte do curso onde a "análise de dados" realmente acontece: explorar tabelas de dados reais com NumPy e Pandas.</p>
+    <div class="box">
+      <strong>🧠 Pergunta para você pensar:</strong> o que aconteceria se a Netflix não soubesse quantos assinantes tem por região? É exatamente esse tipo de pergunta que NumPy e Pandas ajudam a responder.
+    </div>
+  </section>
+
+  <section>
+    <h2>Objetivos da Semana</h2>
+    <ul>
+      <li>Criar arrays <strong>NumPy</strong> e entender por que são mais rápidos que listas comuns</li>
+      <li>Fatiar arrays (<strong>slice</strong>) e evitar as armadilhas de <strong>dtype</strong> e <strong>broadcasting</strong></li>
+      <li>Criar e explorar um <strong>DataFrame</strong> Pandas a partir de um CSV real</li>
+      <li>Selecionar colunas, filtrar linhas e agrupar dados com <strong>groupby</strong> + <strong>sort_values</strong></li>
+      <li>Confirmar que uma coluna do Pandas é, por dentro, um <strong>array NumPy</strong></li>
+    </ul>
+  </section>
+
+  <div class="abertura">
+    <h3>🔄 Retomada — o que vimos na Semana 04</h3>
+    <p>Você já sabe ler arquivos reais (<code>csv.DictReader</code>, <code>json</code>, Excel) e transformar listas de dicionários com <code>for</code> e list comprehensions. Essa é exatamente a base que esta semana usa para ler <code>vendas_papelaria.csv</code>.</p>
+    <h3>🟢 Abertura — Semana 05: NumPy e Pandas</h3>
+    <p>Chegou a hora central do curso. <strong>NumPy e Pandas são as ferramentas mais usadas na análise de dados com Python</strong> — e nesta semana você aprende os fundamentos das duas, nesta ordem: <strong>primeiro NumPy, depois Pandas</strong>. O motivo é simples: toda coluna de uma tabela Pandas é, por dentro, um array NumPy. Entender como um array se comporta é o que explica, mais adiante, por que o Pandas calcula do jeito que calcula.</p>
+    <p><strong>O que você vai aprender nesta semana:</strong></p>
+    <ul>
+      <li>Criar arrays NumPy e fazer cálculos vetorizados eficientes, sem <code>for</code></li>
+      <li>Fatiar arrays (slice) e reconhecer as armadilhas de dtype e broadcasting</li>
+      <li>Criar e explorar Series e DataFrames com Pandas, a partir de um CSV real</li>
+      <li>Filtrar, agrupar e sumarizar dados com <code>describe()</code>, filtros e <code>groupby()</code></li>
+    </ul>
+  </div>
+
+  <section>
+    <h2>1. NumPy: arrays e operações vetorizadas</h2>
+
+    <h3>Exemplo 1 — Array x lista</h3>
+    <pre class="codeblock">import numpy as np
+
+precos_lista = [12.5, 2.0, 3.5]
+precos_array = np.array([12.5, 2.0, 3.5])
+
+print(type(precos_lista))
+print(type(precos_array))
+print(precos_array * 2)   # multiplica cada elemento por 2, de uma vez</pre>
+    <p><code>precos_array * 2</code> retorna <code>[25. 4. 7.]</code>: o NumPy multiplica cada elemento ao mesmo tempo, sem nenhum <code>for</code>. <code>type(precos_array)</code> mostra <code>numpy.ndarray</code> — o nome <strong>ndarray</strong> significa "n-dimensional array" (array de N dimensões): nesta semana você só usa arrays 1D (uma sequência simples), mas o NumPy também representa tabelas (2D) e além, sempre com essa mesma classe.</p>
+
+    <div class="box">
+      <strong>⚠️ Veja como é um erro real do Python:</strong> multiplicar uma <em>lista comum</em> por 2 não dá erro — mas também não faz o que parece:
+      <pre class="codeblock" style="margin:10px 0 0;">precos_lista = [12.5, 2.0, 3.5]
+print(precos_lista * 2)</pre>
+      <pre class="codeblock" style="margin:10px 0 0;">[12.5, 2.0, 3.5, 12.5, 2.0, 3.5]</pre>
+      Em vez de dobrar cada preço, o Python <strong>repete a lista duas vezes seguidas</strong>. Esse é um dos bugs mais traiçoeiros de quem vem de lista pra array: não trava, só faz a coisa errada silenciosamente — sem observar o resultado com atenção, é fácil achar que a conta funcionou.
+    </div>
+
+    <h3>Exemplo extra — Somar um número: lista dá erro, array não</h3>
+    <pre class="codeblock">import numpy as np
+try:
+    lista = [1, 2, 3, 4, 5]
+    print(lista + 1)
+except TypeError as e:
+    print(f"Erro: {e}")
+
+array = np.array([1, 2, 3, 4, 5])
+print(array + 1)</pre>
+    <p><code>lista + 1</code> trava de verdade, com <code>TypeError: can only concatenate list (not "int") to list</code> — o Python não sabe como somar um número a uma lista, e nem tenta adivinhar. <code>array + 1</code> soma 1 em cada posição de uma vez, retornando <code>[2 3 4 5 6]</code> — isso é <strong>broadcasting</strong>, que você vai ver com mais detalhe mais adiante nesta mesma seção.</p>
+
+    <h3>Exemplo extra — Nem toda lista vira um array "limpo"</h3>
+    <pre class="codeblock">import numpy as np
+lista_misturada = [1, "dois", 3.0]
+array_misturado = np.array(lista_misturada)
+
+print(array_misturado)
+print(array_misturado.dtype)</pre>
+    <div class="box tip">
+      <strong>💡 O NumPy não recusa tipos misturados — ele converte tudo pro tipo mais genérico.</strong> Uma lista pode misturar número e texto na mesma variável; um array NumPy não pode: todos os elementos precisam ser do mesmo tipo. Aqui, o resultado é <code>['1' 'dois' '3.0']</code>, e <code>array_misturado.dtype</code> mostra <code>&lt;U32</code> (texto Unicode) — texto é o único tipo capaz de representar os três valores originais ao mesmo tempo. É por isso que todo valor lido de um CSV precisa ser convertido com <code>float(...)</code>/<code>int(...)</code> antes de entrar num array: um único valor de texto sobrando no meio de uma coluna numérica faria o array inteiro virar texto.
+    </div>
+
+    <h3>Exemplo extra — Por que isso importa: velocidade</h3>
+    <pre class="codeblock">import numpy as np
+import time
+
+numeros_lista = list(range(1, 10_000_001))
+numeros_array = np.array(numeros_lista)
+
+inicio = time.time()
+soma_lista = sum(numeros_lista)
+print(f"Lista: {time.time() - inicio:.4f} segundos")
+
+inicio = time.time()
+soma_array = np.sum(numeros_array)
+print(f"Array: {time.time() - inicio:.4f} segundos")</pre>
+    <p>Com poucos elementos, a diferença de velocidade entre lista e array é imperceptível. Mas datasets reais têm milhares (ou milhões) de linhas — e aí a diferença fica bem visível: somar com <code>np.sum()</code> sobre o array é geralmente entre 5 e 15 vezes mais rápido que <code>sum()</code> sobre a lista equivalente. É por isso que o NumPy é a ferramenta padrão do mercado para dado numérico em volume.</p>
+
+    <h3>Exemplo extra — Fatiando um array (slice)</h3>
+    <pre class="codeblock">import numpy as np
+precos_array = np.array([12.5, 2.0, 3.5, 6.0, 150.0])
+
+print(precos_array[1:4])   # índices 1, 2 e 3 -- NÃO inclui o índice 4
+print(precos_array[:3])    # do início até o índice 3 (exclusive) -- os 3 primeiros
+print(precos_array[3:])    # do índice 3 até o final</pre>
+    <div class="box tip">
+      <strong>💡 O que é fatiamento (<code>slice</code>)?</strong> <code>array[início:fim]</code> devolve um pedaço do array, do índice <code>início</code> até o índice <code>fim</code> — mas <strong>sem incluir</strong> o <code>fim</code>. Num array de 5 posições (índices 0 a 4), <code>array[1:4]</code> devolve os índices 1, 2 e 3 — três valores, não quatro. Isso não é exclusividade do NumPy: listas comuns, tuplas e até texto já funcionam com essa mesma sintaxe. Dois atalhos úteis: <code>array[:3]</code> significa "do começo até o índice 3, exclusive"; <code>array[3:]</code> significa "do índice 3 até o final".
+    </div>
+    <div class="box">
+      <strong>⚠️ Erro comum:</strong> pedir mais índices do que o array tem, tipo <code>precos_array[3:10]</code>, <strong>não trava</strong> — o Python devolve o que existir a partir do índice 3, sem erro nenhum e sem avisar que você pediu mais do que existia:
+      <pre class="codeblock" style="margin:10px 0 0;">print(precos_array[3:10])   # [  6. 150.]  -- igual a precos_array[3:]</pre>
+      Repare a diferença com acessar um índice único fora do intervalo, como <code>precos_array[10]</code>, que lança <code>IndexError: index 10 is out of bounds</code>. O slice é tolerante a limites maiores que o array; o acesso direto por índice exige que a posição exista.
+    </div>
+
+    <h3>Exemplo 2 — Calculando a receita de Janeiro com arrays reais</h3>
+    <p><code>vendas_papelaria.csv</code> é o arquivo real desta semana — a técnica pra ler é a mesma que você já usou na Semana 04: o módulo <code>csv</code> e o <code>csv.DictReader</code>. Antes de filtrar qualquer coisa, veja como é UM registro do arquivo inteiro, sem filtro nenhum — é assim que você descobre quais colunas existem e como elas se chamam.</p>
+    <pre class="codeblock">import csv
+
+with open("dataset/vendas_papelaria.csv", encoding="utf-8") as arquivo:
+    todas_vendas = list(csv.DictReader(arquivo))
+
+print(todas_vendas[0])
+# {'produto': 'Caderno', 'categoria': 'Papelaria', 'mes': 'Jan',
+#  'preco_unitario': '12.5', 'quantidade_vendida': '30'}</pre>
+    <p>As chaves desse dicionário — <code>produto</code>, <code>categoria</code>, <code>mes</code>, <code>preco_unitario</code>, <code>quantidade_vendida</code> — são exatamente os nomes de coluna que o restante da aula usa pra filtrar e calcular.</p>
+
+    <p>Agora que você já sabe que existe uma coluna <code>mes</code>, filtrar por ela faz sentido. Veja como ficam os 6 registros de Janeiro, ainda em formato de dicionário:</p>
+    <pre class="codeblock">import csv
+
+with open("dataset/vendas_papelaria.csv", encoding="utf-8") as arquivo:
+    vendas_jan = [linha for linha in csv.DictReader(arquivo) if linha["mes"] == "Jan"]
+
+for registro in vendas_jan:
+    print(registro)</pre>
+    <p>Repare que cada valor ainda está em formato texto (<code>'12.5'</code>, não <code>12.5</code>) — é assim que o módulo <code>csv</code> sempre entrega os dados. Agora vamos converter as colunas <code>preco_unitario</code> e <code>quantidade_vendida</code> em arrays NumPy pra calcular a receita.</p>
+
+    <pre class="codeblock">import csv
+import numpy as np
+
+with open("dataset/vendas_papelaria.csv", encoding="utf-8") as arquivo:
+    vendas_jan = [linha for linha in csv.DictReader(arquivo) if linha["mes"] == "Jan"]
+
+precos = np.array([float(linha["preco_unitario"]) for linha in vendas_jan])
+quantidades = np.array([int(linha["quantidade_vendida"]) for linha in vendas_jan])
+
+receita = precos * quantidades   # multiplicação elemento a elemento, sem for!
+print(receita)
+# [375. 160. 210. 120. 750. 350.]</pre>
+    <p>Cada valor lido do CSV chega como texto (<code>'12.5'</code>, entre aspas) — por isso <code>float(...)</code> e <code>int(...)</code> convertem antes de montar os arrays. <code>precos * quantidades</code> multiplica os dois arrays posição a posição, sem nenhum <code>for</code> escrito no código.</p>
+
+    <h3>Exemplo extra — Broadcasting e funções estatísticas</h3>
+    <pre class="codeblock">precos_com_aumento = precos * 1.10   # aumenta 10% em todos de uma vez, sem for
+print(precos_com_aumento)
+
+print(f"Receita total de janeiro: {receita.sum()}")
+print(f"Preço médio: {precos.mean():.2f}")
+print(f"Maior preço: {precos.max()}")</pre>
+    <p><strong>Broadcasting</strong> é multiplicar um array inteiro por um único número — o NumPy aplica a conta em cada posição automaticamente. <code>.sum()</code>, <code>.mean()</code> e <code>.max()</code> já vêm prontos em qualquer array: somam, tiram a média e acham o maior valor sem precisar escrever um <code>for</code>. Receita total de Janeiro: <code>1965.0</code>; preço médio: <code>34.83</code>; maior preço: <code>150.0</code> (a Mochila).</p>
+
+    <div class="box">
+      <strong>⚠️ Quando o broadcasting NÃO funciona:</strong> arrays de tamanhos incompatíveis geram um erro real, não um resultado "estranho":
+      <pre class="codeblock" style="margin:10px 0 0;">a = np.array([1, 2, 3])
+b = np.array([1, 2])
+print(a * b)</pre>
+      <pre class="codeblock" style="margin:10px 0 0;">ValueError: operands could not be broadcast together with shapes (3,) (2,)</pre>
+      Esse erro trava a execução — diferente da multiplicação de lista por número, que apenas produz um resultado errado sem avisar. Os dois arrays precisam ter o mesmo tamanho (ou um deles ser um único número).
+    </div>
+
+    <div class="ex">
+      <strong>✏️ Atividade Prática 1 — Sua vez de programar</strong><br>
+      <strong>Contextualização:</strong> você acaba de entrar como analista de dados júnior na Papelaria Boa Ideia. O financeiro fechou o relatório de receita de Janeiro (que você acabou de calcular) e agora quer a mesma conta pra Março, pra comparar o início com o meio do trimestre.<br>
+      <strong>Comando:</strong> usando o mesmo <code>vendas_papelaria.csv</code>, filtre as linhas do mês de <strong>Março</strong>, monte os arrays <code>precos</code> e <code>quantidades</code>, calcule a <code>receita</code> de cada produto e imprima a receita total do mês.
+    </div>
+  </section>
+  <div class="checagem">
+    <strong>✅ Checagem rápida — antes de avançar:</strong>
+    Você consegue explicar, em uma frase, por que <code>lista * 2</code> e <code>array * 2</code> fazem coisas diferentes?
+  </div>
+<!-- checagem_1._NumPy -->
+
+  <section>
+    <h2>2. Pandas: Series e DataFrame</h2>
+    <p>🔗 <strong>Por que isso agora?</strong> Você acabou de ver o NumPy organizando números em arrays. O Pandas usa esses mesmos arrays por baixo dos panos, mas organiza os dados em <strong>tabelas</strong> — linhas e colunas com nomes — o formato que praticamente todo dataset do mundo real usa.</p>
+
+    <table>
+      <tr><th>Estrutura</th><th>O que é</th></tr>
+      <tr><td><strong>Series</strong></td><td>Uma única coluna de dados, com índice</td></tr>
+      <tr><td><strong>DataFrame</strong></td><td>Uma tabela completa, com várias colunas (Series juntas)</td></tr>
+    </table>
+
+    <h3>Exemplo 1 — Criando um DataFrame</h3>
+    <pre class="codeblock">import pandas as pd
+from IPython.display import display
+
+estoque_pequeno = pd.DataFrame({
+    "produto": ["Caderno", "Lápis", "Mochila"],
+    "preco_unitario": [12.5, 2.0, 150.0],
+})
+
+display(estoque_pequeno.head())
+print(estoque_pequeno.shape)</pre>
+    <div class="box tip">
+      <strong>💡 Por que <code>display(...)</code> em vez de <code>print(...)</code> pra DataFrame?</strong> <code>print(df)</code> funciona, mas devolve texto puro, sem a tabela com bordas que aparece normalmente num notebook. <code>display(...)</code> (de <code>from IPython.display import display</code>) manda o Jupyter/Colab renderizar a tabela completa. Regra prática pro resto da aula: <code>display(...)</code> pra DataFrame/Series; <code>print(...)</code> pra número, texto, array NumPy, lista ou dicionário.
+    </div>
+
+    <h3>Exemplo 2 — Lendo o dataset real (CSV)</h3>
+    <pre class="codeblock">import pandas as pd
+from IPython.display import display
+
+vendas = pd.read_csv("dataset/vendas_papelaria.csv")
+
+display(vendas.head())
+print(vendas.shape)   # (24, 5)</pre>
+    <p>É assim que você vai carregar qualquer dataset real: com <code>pd.read_csv("nome_do_arquivo.csv")</code>. É o mesmo arquivo que a Seção 1 já leu com <code>csv.DictReader</code> — a diferença é que ali cada linha virava um dicionário separado, e aqui o Pandas já organiza tudo numa única tabela, pronta pra <code>describe()</code>, filtro e <code>groupby()</code> sem nenhum código extra de organização.</p>
+
+    <h3>Exemplo extra — Series x DataFrame</h3>
+    <pre class="codeblock">precos_series = vendas["preco_unitario"]          # Series
+precos_dataframe = vendas[["preco_unitario"]]      # DataFrame (mantém a estrutura de tabela)
+
+print(type(precos_series))
+print(type(precos_dataframe))</pre>
+    <div class="box tip">
+      <strong>💡 Colchete duplo = mantém a estrutura de tabela.</strong> <code>vendas["preco_unitario"]</code>, com um par de colchetes, devolve uma <strong>Series</strong> (<code>pandas.core.series.Series</code>) — uma coluna solta. <code>vendas[["preco_unitario"]]</code>, com dois pares, devolve um <strong>DataFrame</strong> (<code>pandas.core.frame.DataFrame</code>) de uma coluna só. Selecionar mais de uma coluna sempre exige dois colchetes: <code>vendas[["preco_unitario", "categoria"]]</code>.
+    </div>
+
+    <div class="ex">
+      <strong>✏️ Atividade Prática 2 — Sua vez de programar</strong><br>
+      <strong>Contextualização:</strong> o time de TI da Papelaria Boa Ideia está migrando o cadastro de produtos pra um sistema novo, e pediu uma lista simples, só com o nome dos produtos, num arquivo separado.<br>
+      <strong>Comando:</strong> leia <code>vendas_papelaria.csv</code> de novo, confirme quantas linhas e colunas tem com <code>.shape</code>, e depois exporte só a coluna <code>produto</code> (como DataFrame, com dois colchetes) para um novo arquivo <code>produtos.csv</code> usando <code>.to_csv(...)</code>.
+    </div>
+  </section>
+  <div class="checagem">
+    <strong>✅ Checagem rápida — antes de avançar:</strong>
+    Você consegue explicar a diferença entre <code>vendas["preco_unitario"]</code> e <code>vendas[["preco_unitario"]]</code>?
+  </div>
+<!-- checagem_2._Pandas -->
+
+  <section>
+    <h2>3. Explorando um DataFrame: describe, filtros e groupby</h2>
+    <h3>Exemplo 1 — describe()</h3>
+    <pre class="codeblock">print(vendas.describe())</pre>
+    <p><code>describe()</code> resume, de uma vez, estatísticas de cada coluna <strong>numérica</strong>: <code>count</code>, <code>mean</code>, <code>std</code> (desvio padrão), <code>min</code>, <code>max</code> e os quartis (<code>25%</code>, <code>50%</code>, <code>75%</code>). É o primeiro comando que um analista roda ao abrir qualquer dataset novo.</p>
+
+    <div class="box">
+      <strong>⚠️ Veja como é um erro real do Python:</strong> se você digitar o nome de uma coluna errada, como <code>vendas["preco_errado"]</code>, o Pandas recusa e mostra:
+      <pre class="codeblock" style="margin:10px 0 0;">KeyError: 'preco_errado'</pre>
+      Antes de selecionar uma coluna, confira os nomes exatos com <code>vendas.columns</code>.
+    </div>
+
+    <h3>Selecionando por posição ou por rótulo: <code>.loc</code> e <code>.iloc</code></h3>
+    <pre class="codeblock">print(vendas.loc[0, "produto"])      # .loc: pelo nome da coluna + posição da linha
+print(vendas.iloc[0, 0])             # .iloc: só por posição numérica (linha 0, coluna 0)</pre>
+    <div class="box tip">
+      <strong>💡 <code>.loc</code> usa rótulos (nomes), <code>.iloc</code> usa posições (números).</strong> Os dois fazem a mesma coisa de jeitos diferentes. <code>.loc</code> continua funcionando mesmo que a ordem das colunas mude no arquivo, porque busca pelo nome; <code>.iloc</code> quebraria nesse cenário, porque busca só pela posição numérica.
+    </div>
+
+    <h3>Exemplo 2 — Filtro e groupby</h3>
+    <pre class="codeblock"># Filtro: só produtos vendidos mais de 40 vezes no mês
+mais_vendidos = vendas[vendas["quantidade_vendida"] > 40]
+print(mais_vendidos)
+
+# groupby: preço médio por categoria
+print(vendas.groupby("categoria")["preco_unitario"].mean())</pre>
+
+    <h3>Como o groupby pensa por dentro: Dividir → Aplicar → Combinar</h3>
+    <table>
+      <tr><th>Etapa</th><th>O que acontece</th></tr>
+      <tr><td>1. Dividir (split)</td><td>O Pandas separa as linhas em grupos, um para cada valor de <code>categoria</code> (<code>Papelaria</code>, <code>Acessorios</code>)</td></tr>
+      <tr><td>2. Aplicar (apply)</td><td>Dentro de cada grupo separado, calcula a função pedida (ex.: <code>mean()</code> dos preços <em>apenas daquele grupo</em>)</td></tr>
+      <tr><td>3. Combinar (combine)</td><td>Junta o resultado de cada grupo numa única Series de resposta</td></tr>
+    </table>
+    <div class="box tip">
+      <strong>💡 groupby é o mesmo que uma Tabela Dinâmica no Excel:</strong> é exatamente isso que ela faz por trás dos panos. <code>Acessorios</code> (Mochila e Estojo) tem preço médio bem mais alto (<code>92.5</code>) que <code>Papelaria</code> (<code>6.0</code>) — coerente com mochila e estojo custando mais que material de papelaria simples.
+    </div>
+
+    <h3>Ordenando o resultado: <code>sort_values()</code></h3>
+    <pre class="codeblock">preco_medio_por_categoria = vendas.groupby("categoria")["preco_unitario"].mean()
+print(preco_medio_por_categoria.sort_values(ascending=False))</pre>
+    <p><code>sort_values(ascending=False)</code> ordena do maior valor pro menor. Com só 2 categorias a diferença parece pequena de ler, mas com 10 ou 20 categorias é a diferença entre procurar o maior número numa tabela inteira e ler direto a primeira linha.</p>
+
+    <div class="ex">
+      <strong>✏️ Atividade Prática 3 — Sua vez de programar</strong><br>
+      <strong>Contextualização:</strong> a diretoria da Papelaria Boa Ideia quer entender se a Mochila — o item de maior valor no catálogo — vende igual o ano inteiro ou tem meses mais fortes.<br>
+      <strong>Comando:</strong> usando <code>vendas_papelaria.csv</code>, filtre as linhas do produto <code>"Mochila"</code> e calcule o <code>groupby("mes")["quantidade_vendida"].sum()</code> pra ver em que mês a Mochila mais vendeu.
+    </div>
+  </section>
+  <div class="checagem">
+    <strong>✅ Checagem rápida — antes de avançar:</strong>
+    Você consegue explicar os 3 passos que o <code>groupby</code> faz por dentro (dividir, aplicar, combinar)?
+  </div>
+<!-- checagem_3._Explorando -->
+
+  <section>
+    <h2>4. Combinando tudo: receita por categoria</h2>
+    <pre class="codeblock">vendas["receita"] = vendas["preco_unitario"] * vendas["quantidade_vendida"]
+print(vendas.head())
+
+receita_por_categoria = vendas.groupby("categoria")["receita"].sum()
+print(receita_por_categoria.sort_values(ascending=False))</pre>
+    <p><code>vendas["receita"] = ...</code> cria uma coluna nova: como ela ainda não existe, o Pandas simplesmente a adiciona, calculando cada linha como preço vezes quantidade — uma operação vetorizada que roda em todas as linhas de uma vez, com o NumPy por baixo fazendo a conta. <code>Acessorios</code> gera mais receita total (<code>5890.0</code>) que <code>Papelaria</code> (<code>3855.0</code>), mesmo vendendo muito menos unidades — o preço unitário alto compensa o volume baixo. É o contraste mais importante da aula: preço médio alto não é a mesma coisa que receita total alta.</p>
+
+    <h3>Exemplo extra — Por dentro, uma coluna do Pandas é um array NumPy</h3>
+    <pre class="codeblock">receita_array = vendas["receita"].to_numpy()
+print(receita_array)
+print(type(receita_array))   # numpy.ndarray
+
+print(f"Média via NumPy:  {np.mean(receita_array):.2f}")
+print(f"Média via Pandas: {vendas['receita'].mean():.2f}")</pre>
+    <div class="box tip">
+      <strong>💡 <code>.to_numpy()</code> converte uma coluna do Pandas num array NumPy puro</strong> — sem rótulos, só os valores. As duas médias saem <code>406.04</code>, idênticas, porque são a mesma conta rodando duas vezes: o método <code>.mean()</code> do Pandas, por dentro, delega o cálculo pro NumPy. É a confirmação numérica de algo que a Seção 1 já antecipou: toda coluna de um DataFrame é, por dentro, um array NumPy.
+    </div>
+
+    <div class="ex">
+      <strong>✏️ Atividade Prática 4 — Sua vez de programar</strong><br>
+      <strong>Contextualização:</strong> a rede Papelaria Boa Ideia está abrindo novas lojas, e o volume de dados só vai crescer. Antes de automatizar os relatórios, o time de dados precisa confirmar que duas formas diferentes de calcular a mesma coisa (NumPy puro e Pandas) sempre batem.<br>
+      <strong>Comando:</strong> extraia a coluna <code>quantidade_vendida</code> como array NumPy com <code>.to_numpy()</code>, calcule a soma total com <code>np.sum()</code>, e confirme que bate com <code>vendas["quantidade_vendida"].sum()</code>.
+    </div>
+  </section>
+
+  <section>
+    <h2>5. Treino em Squads — Sexta-feira (Encontro 3)</h2>
+    <p>Na sexta-feira, você vai se dividir em squads. Seu squad vai receber <strong>um dataset diferente</strong> dos outros e a missão de explorá-lo: rodar <code>head()</code>, <code>describe()</code> e pelo menos um <code>groupby()</code>, e apresentar <strong>2 conclusões reais</strong> (não só mostrar a tabela).</p>
+    <table>
+      <tr><th>Squad</th><th>Dataset</th></tr>
+      <tr><td>B</td><td>Vendas mensais de uma loja de roupas (por mês e categoria)</td></tr>
+      <tr><td>C</td><td>Assinantes de streaming por região e plano</td></tr>
+      <tr><td>D</td><td>Avaliações de um app (nota, categoria, downloads)</td></tr>
+      <tr><td>E</td><td>Atendimentos de uma clínica (especialidade, tempo de espera, satisfação)</td></tr>
+    </table>
+    <div class="box tip">
+      <strong>🗣️ Depois das apresentações:</strong> participe do debate — qual squad teve a conclusão mais surpreendente? Algum dataset tinha algo "estranho" nos dados (valor fora do padrão)? Guarde essa observação para a Semana 06 (limpeza de dados).
+    </div>
+  </section>
+
+  <div class="fechamento">
+    <h3>🏁 Fechamento — Semana 05</h3>
+    <p><strong>Nesta semana você aprendeu:</strong></p>
+    <ul>
+      <li>Arrays NumPy para cálculos vetorizados sem loops, dtype, fatiamento (slice) e broadcasting</li>
+      <li>Carregar e explorar DataFrames reais: <code>read_csv()</code>, <code>head()</code>, <code>shape</code>, <code>describe()</code></li>
+      <li>Selecionar com <code>.loc</code>/<code>.iloc</code>, filtrar linhas e agrupar com <code>groupby()</code> + <code>sort_values()</code></li>
+      <li>Que uma coluna do Pandas é, por dentro, um array NumPy — <code>.to_numpy()</code> prova isso na prática</li>
+    </ul>
+    <p style="margin-top:14px;"><strong>Próxima semana:</strong> Semana 06 — Limpeza e Transformação de Dados: tratar valores faltantes, duplicatas e outliers.</p>
+  </div>
+
+  <section>
+    <h2>Quiz de Fixação</h2>
+    <p>Responda e clique em <strong>Verificar</strong> para ver o feedback de cada questão.</p>
+
+    <div class="qs" data-correct="b">
+      <p><strong>1.</strong> O que <code>lista_python * 2</code> faz, sendo <code>lista_python</code> uma lista comum (não um array)?</p>
+      <label><input type="radio" name="q1" value="a"> Multiplica cada valor por 2</label>
+      <label><input type="radio" name="q1" value="b"> Repete a lista duas vezes seguidas</label>
+      <label><input type="radio" name="q1" value="c"> Lança um erro</label>
+      <label><input type="radio" name="q1" value="d"> Não faz nada</label>
+      <button type="button" onclick="check(this)">Verificar</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="qs" data-correct="c">
+      <p><strong>2.</strong> O que <code>array[2:5]</code> devolve?</p>
+      <label><input type="radio" name="q2" value="a"> Os índices 2, 3, 4 e 5</label>
+      <label><input type="radio" name="q2" value="b"> Só o índice 2</label>
+      <label><input type="radio" name="q2" value="c"> Os índices 2, 3 e 4 — o índice 5 fica de fora</label>
+      <label><input type="radio" name="q2" value="d"> Um erro, porque o intervalo é inválido</label>
+      <button type="button" onclick="check(this)">Verificar</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="qs" data-correct="b">
+      <p><strong>3.</strong> Qual é a diferença entre <code>df['preco']</code> e <code>df[['preco']]</code>?</p>
+      <label><input type="radio" name="q3" value="a"> Não há diferença</label>
+      <label><input type="radio" name="q3" value="b"> O primeiro retorna Series, o segundo um DataFrame</label>
+      <label><input type="radio" name="q3" value="c"> O segundo só funciona com texto</label>
+      <label><input type="radio" name="q3" value="d"> <code>df[['preco']]</code> é mais rápido</label>
+      <button type="button" onclick="check(this)">Verificar</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="qs" data-correct="b">
+      <p><strong>4.</strong> O que é "broadcasting" em NumPy?</p>
+      <label><input type="radio" name="q4" value="a"> Enviar dados pela internet</label>
+      <label><input type="radio" name="q4" value="b"> Operar um array com um número (ou outro array compatível) sem usar for</label>
+      <label><input type="radio" name="q4" value="c"> Um tipo de gráfico</label>
+      <label><input type="radio" name="q4" value="d"> Um erro comum ao criar arrays</label>
+      <button type="button" onclick="check(this)">Verificar</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="qs" data-correct="c">
+      <p><strong>5.</strong> Qual método calcula o preço médio por categoria?</p>
+      <label><input type="radio" name="q5" value="a"> <code>df.describe()</code></label>
+      <label><input type="radio" name="q5" value="b"> <code>df.head()</code></label>
+      <label><input type="radio" name="q5" value="c"> <code>df.groupby("categoria")["preco"].mean()</code></label>
+      <label><input type="radio" name="q5" value="d"> <code>df.shape</code></label>
+      <button type="button" onclick="check(this)">Verificar</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="qs" data-correct="a">
+      <p><strong>6.</strong> <code>vendas["receita"].to_numpy()</code> converte a coluna em quê?</p>
+      <label><input type="radio" name="q6" value="a"> Um array NumPy puro (numpy.ndarray)</label>
+      <label><input type="radio" name="q6" value="b"> Uma lista Python comum</label>
+      <label><input type="radio" name="q6" value="c"> Um novo DataFrame</label>
+      <label><input type="radio" name="q6" value="d"> Um arquivo CSV</label>
+      <button type="button" onclick="check(this)">Verificar</button>
+      <div class="feedback"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Exercícios da Semana</h2>
+    <div class="ex">
+      <strong>Fácil:</strong> Crie um array NumPy com 6+ números e teste 3 fatiamentos diferentes (<code>[:3]</code>, <code>[3:]</code>, <code>[2:5]</code>).
+    </div>
+    <div class="ex">
+      <strong>Médio:</strong> Leia <code>vendas_papelaria.csv</code> com Pandas, use <code>groupby</code> para calcular a receita total por categoria e ordene com <code>sort_values</code>.
+    </div>
+    <div class="ex">
+      <strong>Avançado:</strong> Extraia uma coluna numérica com <code>.to_numpy()</code> e confirme que <code>np.mean()</code> sobre o array bate com <code>.mean()</code> direto na coluna do Pandas.
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Curso: Análise de Dados com Python — SENAI (Turma T5) · Semana 05<br>
+  <strong>Professor: Cláudio Ferreira Neves - Especialista em Dados</strong>
+</footer>
+
+<script>
+function check(btn){
+  const qs = btn.closest('.qs');
+  const correct = qs.getAttribute('data-correct');
+  const name = qs.querySelector('input').name;
+  const selected = qs.querySelector('input[name="' + name + '"]:checked');
+  const fb = qs.querySelector('.feedback');
+
+  if(!selected){
+    fb.className = 'feedback wrong';
+    fb.textContent = '⚠️ Selecione uma alternativa antes de verificar.';
+    return;
+  }
+
+  if(selected.value === correct){
+    fb.className = 'feedback correct';
+    fb.textContent = '✅ Correto! Muito bem.';
+  } else {
+    const correctLabel = qs.querySelector('input[value="' + correct + '"]').closest('label').textContent.trim();
+    fb.className = 'feedback wrong';
+    fb.textContent = '❌ Incorreto. A resposta certa é: ' + correctLabel;
+  }
+}
+</script>
+
+</body>
+</html>
