@@ -1,0 +1,22 @@
+MINI PROJETO - CURSO MANIPULAÇÃO DE DADOS COM PYTHON E SQL - TURMA 5
+
+OBJETIVO:
+PREPARAR UMA BASE DE DADOS PARA ANÁLISES MAIS AVANÇADAS OU ALIMENTAR UM DASHBOARD: ENTENDER OS DADOS, LIMPÁ-LOS, EXTRAIR ESTATÍSTICAS DESCRITIVSA E COMUNICAR OS PRINCIPAIS INSIGHTS DE FORMA OBJETIVA.
+
+DESCRIÇÃO:  o projeto se torna útil para treinar a montagem das estruturas através de um scripti em Python
+
+REQUISITOS:
+
+INSTALAÇÃO:
+
+USO:
+
+DADOS: Base de dados (varejo) sugerida no Kaggle: https://www.kaggle.com/datasets/namespaiva/base-varejo/data 
+
+METODOLOGIA:
+
+RESULTADOS/VISUALIZAÇÃO:
+
+AUTORIA: CLAUDIA PEDROSO FERREIRA
+E-MAIL: claudinha08@gmail.com
+
