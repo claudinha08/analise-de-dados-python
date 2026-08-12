@@ -1,11 +1,14 @@
 ##Projeto
 ...
 
-Sprint 1 (Importação dos dados): Realização da importação dos dados na plataforma Kaggle para a IDE VsCode ou Colab, onde  o script  será executado.
+Sprint 1 (Importação dos dados): Realização da importação dos dados na plataforma Kaggle para a 
+IDE VsCode ou Colab, onde  o script  será executado.
 Carregar a base Varejo.csv com pandas e mostrar: número de registros, colunas e tipos de dados.
 
-Sprint 2 (Transformação de Strings, Integer e Float e Datetime): Desenvolvimento das funções de limpeza de texto, inteiros e decimais usando métodos e expressões regulares.
-Verificar e reportar ao menos dois problemas básicos: valores nulos por coluna, duplicatas e possíveis inconsistências (ex.: datas inválidas ou categorias vazias).
+Sprint 2 (Transformação de Strings, Integer e Float e Datetime): Desenvolvimento das funções de limpeza 
+de texto, inteiros e decimais usando métodos e expressões regulares.
+Verificar e reportar ao menos dois problemas básicos: valores nulos por coluna, 
+duplicatas e possíveis inconsistências (ex.: datas inválidas ou categorias vazias).
 
 Sprint 3 (Limpeza de Nulos e Duplicatas): Aplicação das condicionais e funções  para identificação e substituição de valores vazios e  de str para valores de data tipo datetime, na tabela de varejo. 
 Fazer as três etapas de limpeza mínima necessária: remover ou imputar nulos (explique a escolha), eliminar duplicatas relevantes e ajustar tipos de dados (ex.: converter coluna DATA para datetime).
