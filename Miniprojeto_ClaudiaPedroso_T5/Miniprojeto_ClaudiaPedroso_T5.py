@@ -4,9 +4,7 @@ import csv
 import matplotlib as plt
 
 #importando o arquivo CSV
-with open('BaseVarejo/BaseVarejo.csv', 'r', encoding='utf-8') as arquivo:
-    df_vendas = list(csv.DictReader(arquivo))
-
+df_vendas = pd.read_csv("BaseVarejo/BaseVarejo.csv")
 
 # Exibição dos parâmetros básicos solicitados
 print(f"Número de registros (linhas) : {df_vendas.shape[0]}")
