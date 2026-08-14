@@ -36,8 +36,8 @@ Para executar o projeto, é necessário ter instalado:
 
 - Python 3.x
 - Pandas
-- Jupyter Notebook ou ambiente Python local
-- Visual Studio Code (opcional, mas recomendado)
+- Ambiente Python local
+- Visual Studio Code 
 - Acesso à base de dados em CSV
 
 ---
@@ -87,21 +87,7 @@ O desenvolvimento do projeto foi organizado em etapas.
 
 ---
 
-## 7. Fluxo de Trabalho do Projeto
-
-O script foi estruturado para seguir uma sequência lógica com base na proposta pelo projeto:
-
-1. carregar a base de dados;
-2. inspecionar a base;
-3. validar a qualidade dos dados;
-4. aplicar limpeza e padronização;
-5. gerar estatísticas descritivas;
-6. realizar agrupamentos;
-7. registrar conclusões.
-
----
-
-## 8. Resultados Esperados
+## 7. Resultados Esperados
 
 Ao final do projeto, espera-se obter:
 
@@ -113,7 +99,7 @@ Ao final do projeto, espera-se obter:
 
 ---
 
-## 9. Exemplo de Conclusões
+## 8. Exemplo de Conclusões
 
 Entre os principais insights esperados, podem ser listados:
 
@@ -125,22 +111,11 @@ Entre os principais insights esperados, podem ser listados:
 
 ---
 
-## 10. Estrutura do Projeto
 
-O projeto pode ser organizado da seguinte forma:
-
-- script principal em Python
-- base de dados original em CSV
-- base tratada após limpeza
-- README com a documentação do projeto
-- arquivos de versionamento no GitHub
-
----
-
-## 11. Sprints do Projeto
+## 09. Sprints do Projeto
 
 ### Sprint 1 - Importação dos dados
-Realização da importação da base no Kaggle e execução do script na IDE VS Code ou no Google Colab.
+Realização da importação da base no Kaggle e execução do script na IDE VS Code.
 
 ### Sprint 2 - Transformação de strings, inteiros, float e datetime
 Desenvolvimento das funções de limpeza e conversão de tipos para garantir consistência dos dados.
@@ -159,7 +134,7 @@ Envio dos arquivos para o repositório do GitHub, incluindo script, README e bas
 
 ---
 
-## 12. Como Executar
+## 10. Como Executar
 
 1. Clonar ou baixar o projeto;
 2. abrir o arquivo Python no ambiente escolhido;
@@ -168,16 +143,14 @@ Envio dos arquivos para o repositório do GitHub, incluindo script, README e bas
 5. executar o script;
 6. revisar as saídas no terminal e os resultados gerados.
 
+
+
 ---
 
-## 13. Autoria
+## 11. Autoria
 
 - Autora: Claudia Pedroso Ferreira
 - E-mail: claudinha08@gmail.com
 
 ---
-
-## 14. Observações Finais
-
-Este projeto tem caráter didático e tem como principal objetivo desenvolver habilidades em manipulação, limpeza e análise exploratória de dados com Python. Além disso, ele reforça a importância da organização do código, documentação e interpretação dos resultados para tornar a análise útil e confiável.
 

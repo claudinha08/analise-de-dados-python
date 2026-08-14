@@ -10,11 +10,15 @@ de texto, inteiros e decimais usando métodos e expressões regulares.
 Verificar e reportar ao menos dois problemas básicos: valores nulos por coluna, 
 duplicatas e possíveis inconsistências (ex.: datas inválidas ou categorias vazias).
 
-Sprint 3 (Limpeza de Nulos e Duplicatas): Aplicação das condicionais e funções  para identificação e substituição de valores vazios e  de str para valores de data tipo datetime, na tabela de varejo. 
-Fazer as três etapas de limpeza mínima necessária: remover ou imputar nulos (explique a escolha), eliminar duplicatas relevantes e ajustar tipos de dados (ex.: converter coluna DATA para datetime).
+Sprint 3 (Limpeza de Nulos e Duplicatas): Aplicação das condicionais e funções  para identificação 
+e substituição de valores vazios e  de str para valores de data tipo datetime, na tabela de varejo. 
+Fazer as três etapas de limpeza mínima necessária: remover ou imputar nulos (explique a escolha), 
+eliminar duplicatas relevantes e ajustar tipos de dados (ex.: converter coluna DATA para datetime).
 
-Sprint 4 (Estatística Descritiva): Aplicação das funções estatísticas para coletar parâmetros da coluna de Número de filhos do cliente.
-Gerar estatísticas descritivas básicas para coluna de número de filhos do cliente (média; mediana; desvio padrão; moda; máximo; mínimo; e contagem, quartis)
+Sprint 4 (Estatística Descritiva): Aplicação das funções estatísticas para coletar parâmetros 
+da coluna de Número de filhos do cliente.
+Gerar estatísticas descritivas básicas para coluna de número 
+de filhos do cliente (média; mediana; desvio padrão; moda; máximo; mínimo; e contagem, quartis)
 
 
 Sprint 5 (Relatório e Documentação): Construção dos contadores do relatório final exibido no terminal, finalização do README.md com a reflexão teórica e submissão do link no AVA.
