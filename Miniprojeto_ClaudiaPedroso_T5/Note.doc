@@ -21,8 +21,10 @@ Gerar estatísticas descritivas básicas para coluna de número
 de filhos do cliente (média; mediana; desvio padrão; moda; máximo; mínimo; e contagem, quartis)
 
 
-Sprint 5 (Relatório e Documentação): Construção dos contadores do relatório final exibido no terminal, finalização do README.md com a reflexão teórica e submissão do link no AVA.
-Explorar padrões de agrupamento com pelo menos dois agrupamentos (por exemplo: gênero com mais vendas, compras), usando groupby() ou pivot_table().
+Sprint 5 (Relatório e Documentação): Construção dos contadores do relatório final exibido no terminal, 
+finalização do README.md com a reflexão teórica e submissão do link no AVA.
+Explorar padrões de agrupamento com pelo menos dois agrupamentos 
+(por exemplo: gênero com mais vendas, compras), usando groupby() ou pivot_table().
 
 
 Sprint 6 (Versionamento): Envio dos arquivos (script + README.md + df_limpo), via Git para o repositório no GitHub.
