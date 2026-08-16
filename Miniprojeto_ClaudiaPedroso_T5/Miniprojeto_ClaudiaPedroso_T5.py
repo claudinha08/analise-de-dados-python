@@ -138,3 +138,94 @@ agrup_genero = (
 
 print("\nAgrupamento 1: Padrão de Compras por Gênero (groupby)")
 print(agrup_genero.to_string(index=False))
+
+## Gráfico de barras para distribuição de clientes por número de filhos
+
+import matplotlib.gridspec as gridspec ##procurei por itens de layout para gráfico e usei esse para melhorar a aparencia do gráfico
+
+fig = plt.figure(figsize=(14, 7), dpi=100)
+gs = gridspec.GridSpec(2, 2, width_ratios=[1.8, 1], height_ratios=[1, 1])
+
+serie = df_limpo['CL_FHL']
+ax_bar = fig.add_subplot(gs[:, 0])
+
+contagem = serie.value_counts().sort_index()
+cores = ['#8cb8d6', '#a58aa5', '#a1d49b', '#b58273', '#e89898']
+
+barras = ax_bar.bar(
+    contagem.index.astype(str),
+    contagem.values,
+    color=cores,
+    edgecolor='gray',
+    width=0.7,
+)
+
+# Rótulos de dados sobre as barras
+for bar in barras:
+  altura = bar.get_height()
+  ax_bar.annotate(
+      f'{int(altura):,}',
+      xy=(bar.get_x() + bar.get_width() / 2, altura),
+      xytext=(0, 4),
+      textcoords='offset points',
+      ha='center',
+      va='bottom',
+      fontsize=10,
+  )
+
+ax_bar.set_title(
+    "DISTRIBUIÇÃO DE CLIENTES POR NÚMERO DE FILHOS ('CL_FHL')",
+    fontsize=12,
+    fontweight='bold',
+)
+ax_bar.set_xlabel('NÚMERO DE FILHOS', fontsize=11)
+ax_bar.set_ylabel('NÚMERO DE CLIENTES', fontsize=11)
+ax_bar.grid(True, linestyle='-', alpha=0.6)
+
+fig.savefig("distribuicao_clientes_filhos.png", dpi=150)
+
+## Média e mediana da distruiçao de quantidade de filhos
+
+##calculos
+media = serie.mean()
+mediana = serie.median()
+
+##configuração gráfica
+
+fig, ax = plt.subplots(figsize=(8, 5), dpi=100)
+
+metricas = ['Média', 'Mediana']
+valores = [media, mediana]
+cores = ['#2b5c8f', '#e26d5c']
+
+barras = ax.bar(metricas, valores, color=cores, width=0.4, edgecolor='black')
+
+# Exibir os valores numéricos em cima de cada barra
+for barra in barras:
+  altura = barra.get_height()
+  ax.annotate(
+      f'{altura:.2f}',
+      xy=(barra.get_x() + barra.get_width() / 2, altura),
+      xytext=(0, 5),
+      textcoords='offset points',
+      ha='center',
+      va='bottom',
+      fontsize=12,
+      fontweight='bold',
+  )
+
+# Ajustes visuais
+ax.set_title(
+    "Comparativo: Média vs Mediana (Coluna 'CL_FHL')",
+    fontsize=13,
+    fontweight='bold',
+)
+ax.set_ylabel('Valor', fontsize=11)
+ax.set_ylim(0, max(valores) * 1.3)  # Espaço para o rótulo
+ax.grid(axis='y', linestyle='--', alpha=0.7)
+
+# 4. Salvar na pasta 'Graficos'
+fig.savefig("distribuicao_qtd_filhos.png", dpi=150)
+
+
+plt.show()
