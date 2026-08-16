@@ -2,7 +2,7 @@
 
 ## 1. Visão Geral
 
-Este projeto foi desenvolvido no contexto do curso de manipulação de dados com Python e SQL, com foco na preparação de uma base de dados para análises mais avançadas e para alimentar dashboards. A proposta principal é entender os dados, realizar a limpeza necessária, extrair estatísticas descritivas e comunicar os principais insights de forma objetiva.
+Este projeto foi desenvolvido no contexto do curso de manipulação de dados com Python e SQL, com foco na preparação de uma base de dados para análises. A proposta principal é entender os dados, realizar a limpeza necessária, extrair estatísticas descritivas e comunicar os principais insights de forma objetiva através de um relatório.
 
 O objetivo é criar um script em Python capaz de:
 
@@ -39,6 +39,7 @@ Para executar o projeto, é necessário ter instalado:
 - Ambiente Python local
 - Visual Studio Code 
 - Acesso à base de dados em CSV
+- Blibliotecas Pandas, Numpy, Matplotlib, Regex
 
 ---
 
@@ -77,8 +78,7 @@ O desenvolvimento do projeto foi organizado em etapas.
 ### Etapa 5 - Agrupamentos e análise de padrões
 - comparar categorias e padrões de comportamento, por exemplo:
   - gênero com maior volume de vendas;
-  - agrupamento por categoria, região ou outra variável relevante;
-  - análise de relacionamento entre segmentos e indicadores de compra.
+  - agrupamento por categoria
 
 ### Etapa 6 - Relatório e documentação
 - registrar os principais achados;
@@ -99,42 +99,7 @@ Ao final do projeto, espera-se obter:
 
 ---
 
-## 8. Exemplo de Conclusões
-
-Entre os principais insights esperados, podem ser listados:
-
-- a base contém registros com possíveis inconsistências que exigem tratamento antes de análises mais aprofundadas;
-- a ausência de valores e duplicatas pode distorcer métricas e comparações;
-- a conversão de colunas para tipos adequados facilita operações estatísticas e de agrupamento;
-- a análise por categoria revela padrões importantes de comportamento de compra;
-- a limpeza dos dados é essencial para garantir confiabilidade nos resultados.
-
----
-
-
-## 09. Sprints do Projeto
-
-### Sprint 1 - Importação dos dados
-Realização da importação da base no Kaggle e execução do script na IDE VS Code.
-
-### Sprint 2 - Transformação de strings, inteiros, float e datetime
-Desenvolvimento das funções de limpeza e conversão de tipos para garantir consistência dos dados.
-
-### Sprint 3 - Limpeza de nulos e duplicatas
-Aplicação de condições e funções para identificar e tratar valores ausentes, além de corrigir inconsistências de data e texto.
-
-### Sprint 4 - Estatística descritiva
-Aplicação de funções estatísticas para coletar parâmetros relevantes da variável número de filhos do cliente.
-
-### Sprint 5 - Relatório e documentação
-Construção do relatório final exibido no terminal e finalização do README com reflexão teórica.
-
-### Sprint 6 - Versionamento
-Envio dos arquivos para o repositório do GitHub, incluindo script, README e base tratada.
-
----
-
-## 10. Como Executar
+## 8. Como Executar
 
 1. Clonar ou baixar o projeto;
 2. abrir o arquivo Python no ambiente escolhido;
@@ -142,8 +107,7 @@ Envio dos arquivos para o repositório do GitHub, incluindo script, README e bas
 4. carregar a base de dados;
 5. executar o script;
 6. revisar as saídas no terminal e os resultados gerados.
-
-
+7. leitura do relatório final
 
 ---
 
