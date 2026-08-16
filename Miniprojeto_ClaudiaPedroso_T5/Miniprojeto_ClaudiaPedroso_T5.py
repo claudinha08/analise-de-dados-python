@@ -1,3 +1,6 @@
+
+#SPRINT 1: IMPORTAÇÃO E EXPLORAÇÃO INICIAL
+
 import numpy as np
 import pandas as pd
 import re
@@ -12,8 +15,10 @@ df_vendas = pd.read_csv("BaseVarejo/BaseVarejo.csv", sep=';')
 print(f"Número de registros: {len(df_vendas)}")
 print(f"Número de linhas e colunas: {df_vendas.shape}")
 
+print("\nPrimeiras 5 linhas:")
+print(df_vendas.head())
 
-### Diagnostico e funções de limpeza
+### SPRINT 2: DIAGNÓSTICO E FUNÇÕES DE LIMPEZA
 
 # 1.Limpeza das colunas vazias (encontradas 4 colunas com o nome Unnamed)
 df_limpo = df_vendas.drop(columns=[col for col in df_vendas.columns if 'Unnamed' in col])
@@ -23,19 +28,23 @@ display(df_limpo.info())
 
 ### Inconsistências de dados
 
-#2. procurar valores nulos 
-nulos =df_limpo.isna().sum() 
+#2. Procurar valores nulos 
+nulos =df_limpo.isnull().sum() 
 print(f"Número de valores nulos por coluna:\n{nulos}")
 
 
-#3. Identificando duplicidades
+### SPRINT 3: LIMPEZA E TRATAMENTO DOS DADOS
+
+#1. Identificando duplicidades
 print(f"Número de registros duplicados: {df_limpo.duplicated().sum()}")
+# Remoção de duplicatas exatas
+df_limpo = df_limpo.drop_duplicates().reset_index(drop=True)
 
 
-#4. Checagem das datas inválidas
-data_teste = pd.to_datetime( #projetando a coluna de uma vez, ja que estamos usando Pandas
-    df_limpo['DATA'], format='%d/%m/%Y', errors='coerce')
-print(f"Número de datas inválidas: {data_teste.isna().sum()}")
+#2. Checagem das datas inválidas
+colunas_data = [c for c in df_limpo.columns if "data" in c.lower() or "date" in c.lower()]
+for col in colunas_data:
+    df_limpo[col] = pd.to_datetime(df_limpo[col], errors="coerce", dayfirst=True)
 
 # 5. Funções com Expressões Regulares para Sanitarização
 def limpar_texto_regex(texto):
