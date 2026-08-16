@@ -38,11 +38,11 @@ print(f"Número de valores nulos/ausentes por coluna:\n{nulos}")
 
 ### SPRINT 3: LIMPEZA E TRATAMENTO DOS DADOS
 
-#1. Identificando duplicidades
+# 1. Identificando duplicidades
 print(f"Número de registros duplicados: {df_limpo.duplicated().sum()}")
 
 
-#2. Detectando Outliers na coluna CL_FHL (nº de filhos) usando o método IQR
+# 2. Detectando Outliers na coluna CL_FHL (nº de filhos) usando o método IQR
 Q1 = df_limpo['CL_FHL'].quantile(0.25)
 Q3 = df_limpo['CL_FHL'].quantile(0.75)
 IQR = Q3 - Q1
@@ -50,7 +50,7 @@ limite_superior = Q3 + 1.5 * IQR
 print(f"Limite superior: {limite_superior}")
 
 
-# 5. Funções com Expressões Regulares para Sanitarização
+# 3. Funções com Expressões Regulares para Sanitarização
 def limpar_texto_regex(texto):
   """Remove espaços extras/duplos via Regex e padroniza para maiúsculas."""
   if pd.isna(texto):
@@ -106,7 +106,7 @@ df_limpo["CL_GENERO"] = df_limpo["CL_GENERO"].apply(padronizar_genero)
 
 ### Estatística Descritiva para coluna de filhos (CL_FHL)
 
-#CL_FHL (coluna nº de filhos) - utilizarei a mediana para não sofrer com outliers
+#CL_FHL (coluna nº de filhos) 
 
 status_filhos = df_limpo['CL_FHL']
 
