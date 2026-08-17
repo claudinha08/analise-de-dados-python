@@ -67,7 +67,6 @@ O desenvolvimento do projeto foi organizado em etapas.
 
 ### Etapa 3 - Limpeza de nulos e duplicatas
 - identificar valores ausentes por coluna;
-- remover ou imputar dados faltantes conforme a necessidade;
 - eliminar registros duplicados;
 - corrigir inconsistências em campos como datas e categorias.
 
@@ -77,8 +76,8 @@ O desenvolvimento do projeto foi organizado em etapas.
 
 ### Etapa 5 - Agrupamentos e análise de padrões
 - comparar categorias e padrões de comportamento, por exemplo:
-  - gênero com maior volume de vendas;
-  - agrupamento por categoria
+  - Análise Nº de filho por cliente
+  - agrupamento por categoria (gênero)
 
 ### Etapa 6 - Relatório e documentação
 - registrar os principais achados;
