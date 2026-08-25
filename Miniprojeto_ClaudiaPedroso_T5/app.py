@@ -1,3 +1,5 @@
+import os
+from pathlib import Path
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -34,6 +36,23 @@ for c in caminhos_possiveis:
         CAMINHO_FINAL = c
         break
     
+# ==============================================================================
+# RESOLUÇÃO DO CAMINHO DO CSV USANDO PATHLIB
+# ==============================================================================
+PASTA_ATUAL = Path(__file__).resolve().parent
+
+caminhos_possiveis = [
+    PASTA_ATUAL / "BaseVarejo" / "BaseVarejo.csv",
+    PASTA_ATUAL / "BaseVarejo.csv",
+    PASTA_ATUAL.parent / "BaseVarejo" / "BaseVarejo.csv",
+    PASTA_ATUAL.parent / "BaseVarejo.csv",
+]
+
+CAMINHO_FINAL = None
+for caminho in caminhos_possiveis:
+    if caminho.exists():
+        CAMINHO_FINAL = caminho
+        break
 # ==============================================================================
 # CARGA E TRATAMENTO DE DADOS (COM CACHE)
 # ==============================================================================
