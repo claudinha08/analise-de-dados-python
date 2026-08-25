@@ -58,52 +58,55 @@ def padronizar_genero(val):
 
 ### SPRINT 3: LIMPEZA E TRATAMENTO DOS DADOS
 
-# 1. Identificando duplicidades
-print(f"Número de registros duplicados: {df_limpo.duplicated().sum()}")
+print("\n=== SPRINT 3: TRATAMENTO E TRANSFORMAÇÃO ===")
 
-
-# 2. Detectando Outliers na coluna CL_FHL (nº de filhos) usando o método IQR
-Q1 = df_limpo['CL_FHL'].quantile(0.25)
-Q3 = df_limpo['CL_FHL'].quantile(0.75)
-IQR = Q3 - Q1
-limite_superior = Q3 + 1.5 * IQR
-print(f"Limite superior: {limite_superior}")
-
-
-
-
-### Tratamento de Nulos, Duplicatas e Ajuste de tipos
-
-# 1. Eliminar duplicatas relevantes
+# 1. Eliminação de duplicidades
+qtds_duplicadas = df_limpo.duplicated().sum()
+print(f"Número de registros duplicados: {qtds_duplicadas:,}")
 df_limpo = df_limpo.drop_duplicates()
-print(f"Registros duplicados eliminados. Linhas restantes: {len(df_limpo)}")
-display(df_limpo.shape)
+print(f"Linhas restantes após deduplicação: {len(df_limpo):,}")
 
-# 2. Verificando valores ausentes na coluna CL_FHL (nº de filhos)
-display(df_limpo['CL_FHL'].describe(), df_limpo['CL_FHL'].value_counts())
-ausentes_filhos =df_limpo['CL_FHL'].isna().sum()
-print(f"Número de valores ausentes na coluna CL_FHL: {ausentes_filhos}")
 
-# 3. Detectando Outliers na coluna CL_FHL (nº de filhos) usando o método IQR
-Q1 = df_limpo['CL_FHL'].quantile(0.25)
-Q3 = df_limpo['CL_FHL'].quantile(0.75)
-IQR = Q3 - Q1
+# 2. Conversão da coluna DATA para datetime
+if 'DATA' in df_limpo.columns:
+    df_limpo['DATA'] = pd.to_datetime(df_limpo['DATA'], format='%d/%m/%Y', errors='coerce')
+    print("Coluna 'DATA' convertida com sucesso para datetime.")
 
-limite_superior = Q3 + 1.5 * IQR
-print(f"Limite superior: {limite_superior}")
-
-#contar registro acima do limite superior
-limite_superior_contagem = df_limpo[df_limpo['CL_FHL']> limite_superior]
-print(f"Total de registro acima do limite: {len(limite_superior_contagem)}")
-
-#4. Converter DATA para o tipo datetime com correção de erros
-df_limpo['DATA'] = pd.to_datetime(df_limpo['DATA'], format='%d/%m/%Y', errors='coerce')
 
 #3. Lipeza de texto com Regex nas colunas categorias e nome
 for col in ["CL_SEG", "PR_CAT", "PR_NOME"]:
-    df_limpo[col] = df_limpo[col].apply(limpar_texto_regex)
+    if col in df_limpo.columns:
+      df_limpo[col] = df_limpo[col].apply(limpar_texto_regex)
+    
+if "CL_GENERO" in df_limpo.columns:
+    df_limpo["CL_GENERO"] = df_limpo["CL_GENERO"].apply(padronizar_genero)
 
-df_limpo["CL_GENERO"] = df_limpo["CL_GENERO"].apply(padronizar_genero)
+# 4. Tratamento de nulos na coluna CL_FHL (Imputação pela Mediana)
+if 'CL_FHL' in df_limpo.columns:
+    ausentes_filhos = df_limpo['CL_FHL'].isna().sum()
+    print(f"Valores ausentes em 'CL_FHL': {ausentes_filhos:,}")
+    mediana_filhos = df_limpo['CL_FHL'].median()
+    df_limpo['CL_FHL'] = df_limpo['CL_FHL'].fillna(mediana_filhos)
+    print(f"Imputação realizada com a mediana: {mediana_filhos}")
+
+
+# 5. Detectando Outliers na coluna CL_FHL (nº de filhos) usando o método IQR
+Q1 = df_limpo['CL_FHL'].quantile(0.25)
+Q3 = df_limpo['CL_FHL'].quantile(0.75)
+IQR = Q3 - Q1
+limite_superior = Q3 + 1.5 * IQR
+total_outliers = (df_limpo['CL_FHL'] > limite_superior).sum()
+print(f"Limite Superior (IQR): {limite_superior} | Total de Outliers: {total_outliers:,}")
+
+
+#SPRINT 4: ANÁLISE ESTATÍSTICA, PERFIL DE CONSUMO E DATA VIZ
+
+print("\n=== SPRINT 4: ESTATÍSTICA E PADRÕES DE CONSUMO ===")
+
+
+
+
+
 
 
 ### Estatística Descritiva para coluna de filhos (CL_FHL)
