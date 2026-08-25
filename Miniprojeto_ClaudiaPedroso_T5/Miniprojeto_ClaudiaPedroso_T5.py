@@ -4,8 +4,8 @@
 import numpy as np
 import pandas as pd
 import re
+import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
-import matplolib.grid as gridspec
 from datetime import datetime
 
 #1. Importando o arquivo BaseVarejo.csv
@@ -34,8 +34,8 @@ print(f"Colunas vazias ('Unnamed') eliminadas: {len(df_limpo.columns) - len(df_v
 
 
 #2. Mapeando valores nulos/ausentes
-print(f"Número de valores nulos/ausentes por coluna:\n{nulos}")
 nulos = df_limpo.isnull().sum() 
+print(f"Número de valores nulos/ausentes por coluna:\n{nulos}")
 
 # 3. Funções com Expressões Regulares para Sanitarização
 def limpar_texto_regex(texto):
@@ -127,7 +127,7 @@ print(df_stats.to_string(index=False))
 
 
 #2. Criação da Faixa Familiar (Perfil de Consumo) com base na quantidade de filhos
-df_limpo['PERFIL_Familiar'] = df_limpo['CL_FHL'].apply(
+df_limpo['PERFIL_FAMILIA'] = df_limpo['CL_FHL'].apply(
     lambda x: 'Sem Filhos' if x == 0 else ('Com Filhos' if x > 0 else 'Não Informado') 
 )
 
@@ -135,16 +135,14 @@ df_limpo['PERFIL_Familiar'] = df_limpo['CL_FHL'].apply(
 if 'RP_CAT' in df_limpo.columns:
     consumo_perfil = pd.crosstab(
       df_limpo['PR_CAT'],
-      df_limpo['PERFIL_Familiar'],
+      df_limpo['PERFIL_FAMILIA'],
       normalize='columns')* 100
     print('\n % de Consumo por Categoria e Perfil Familiar:')
     print(consumo_perfil.round(2))
     
 # Agrupamento por gênero: Total de Compras e Média de Filhos por Gênero (Groupby)
 if "CL_GENERO" in df_limpo.columns and "CO_ID" in df_limpo.columns:
-    agrup_genero = (
-      df_limpo.groupby("CL_GENERO")
-        .agg(
+    agrup_genero = df_limpo.groupby("CL_GENERO").agg(
         Total_Transacoes=("CO_ID", "count"),
         Media_Filhos=("CL_FHL", "mean"),
     ).reset_index()
@@ -193,11 +191,11 @@ fig.savefig("distribuicao_clientes_filhos.png", dpi=150)
 
 
 # Gráfico 2: Top Categorias por Perfil Familiar
-if 'PR_CAT' in df_limpo.columns
+if 'PR_CAT' in df_limpo.columns:
     top_cats = df_limpo['PR_CAT'].value_counts().head(6).index
     df_top_cats = df_limpo[df_limpo['PR_CAT'].isin(top_cats)]
     
-    table_plot = df.crosstab(df_top_cats['PR_CAT'], df_top_cats['PERFIL_FAMILIAR'])
+    tabela_plot = pd.crosstab(df_top_cats['PR_CAT'], df_top_cats['PERFIL_FAMILIA'])
     
     fig2, ax2 = plt.subplots(figsize=(10, 5), dpi=100)
     tabela_plot.plot(kind='bar', ax=ax2, colormap='viridis', edgecolor='black', width=0.7)
@@ -244,10 +242,10 @@ ax3.set_title("Comparativo: Média vs Mediana (Coluna 'CL_FHL')",
 )
 ax3.set_ylabel('Valor', fontsize=11)
 ax3.set_ylim(0, max(valores) * 1.3)  # Espaço para o rótulo
-ax.grid(axis='y', linestyle='--', alpha=0.7)
+ax3.grid(axis='y', linestyle='--', alpha=0.7)
 
 # Salvar na pasta 'Graficos'
-fig.savefig("distribuicao_qtd_filhos.png", dpi=150)
+fig3.savefig("comparativo_media_mediana.png", dpi=150)
 
 
 plt.show()
