@@ -12,6 +12,7 @@ from datetime import datetime
 df_vendas = pd.read_csv("BaseVarejo/BaseVarejo.csv", encoding='utf-8', sep=';')
 
 #2. Exibição dos dados básicos (nº de registro, linhas, colunas e tipos de dados) 
+print("=== SPRINT 1: DIAGNÓSTICO INICIAL ===")
 print("Informações do DataFrame:")
 print(f"Número de registros: {len(df_vendas)}")
 print(f"Número de linhas e colunas: {df_vendas.shape}")
@@ -25,19 +26,35 @@ df_vendas.info()
 
 ### SPRINT 2: DIAGNÓSTICO E FUNÇÕES DE LIMPEZA
 
-### Inconsistências de dados
+print("\n=== SPRINT 2: DIAGNÓSTICO DE INCONSISTÊNCIAS ===")
 
 # 1.Limpeza das colunas vazias (encontradas 4 colunas com o nome Unnamed)
 df_limpo = df_vendas.drop(columns=[col for col in df_vendas.columns if 'Unnamed' in col])
 print(f"Colunas vazias ('Unnamed') eliminadas: {len(df_limpo.columns) - len(df_vendas.columns)}")
 
-display(df_limpo.tail())
 
-#2. Procurar valores nulos/ausentes
-nulos =df_limpo.isnull().sum() 
+#2. Mapeando valores nulos/ausentes
 print(f"Número de valores nulos/ausentes por coluna:\n{nulos}")
+nulos = df_limpo.isnull().sum() 
 
+# 3. Funções com Expressões Regulares para Sanitarização
+def limpar_texto_regex(texto):
+  """Remove espaços extras/duplos via Regex e padroniza para maiúsculas."""
+  if pd.isna(texto):
+    return texto
+  return re.sub(r"\s+", " ", str(texto).strip())
+ 
 
+def padronizar_genero(val):
+  """Padroniza entradas categóricas desordenadas de gênero."""
+  if pd.isna(val):
+    return "NÃO INFORMADO"
+  val_clean = str(val).strip().upper()
+  if val_clean in ["M", "MASCULINO"]:
+    return "MASCULINO"
+  elif val_clean in ["F", "FEMININO"]:
+    return "FEMININO"
+  return val_clean
 
 ### SPRINT 3: LIMPEZA E TRATAMENTO DOS DADOS
 
@@ -53,25 +70,7 @@ limite_superior = Q3 + 1.5 * IQR
 print(f"Limite superior: {limite_superior}")
 
 
-# 3. Funções com Expressões Regulares para Sanitarização
-def limpar_texto_regex(texto):
-  """Remove espaços extras/duplos via Regex e padroniza para maiúsculas."""
-  if pd.isna(texto):
-    return texto
-  texto_limpo = re.sub(r"\s+", " ", str(texto).strip())
-  return texto_limpo.upper()
 
-
-def padronizar_genero(val):
-  """Padroniza entradas categóricas desordenadas de gênero."""
-  if pd.isna(val):
-    return "NÃO INFORMADO"
-  val_clean = str(val).strip().upper()
-  if val_clean in ["M", "MASCULINO"]:
-    return "MASCULINO"
-  elif val_clean in ["F", "FEMININO"]:
-    return "FEMININO"
-  return val_clean
 
 ### Tratamento de Nulos, Duplicatas e Ajuste de tipos
 
