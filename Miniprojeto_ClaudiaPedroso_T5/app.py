@@ -16,12 +16,31 @@ st.set_page_config(
 )
 
 # ==============================================================================
+# LOCALIZAÇÃO DINÂMICA DO ARQUIVO CSV
+# ==============================================================================
+DIRETORIO_SCRIPT = os.path.dirname(os.path.abspath(__file__))
+
+# Tenta encontrar o arquivo tanto na mesma pasta quanto em subpastas
+caminhos_possiveis = [
+    os.path.join(DIRETORIO_SCRIPT, "BaseVarejo", "BaseVarejo.csv"),
+    os.path.join(DIRETORIO_SCRIPT, "BaseVarejo.csv"),
+    os.path.join(DIRETORIO_SCRIPT, "..", "BaseVarejo", "BaseVarejo.csv"),
+    os.path.join(DIRETORIO_SCRIPT, "..", "BaseVarejo.csv"),
+]
+
+CAMINHO_FINAL = None
+for c in caminhos_possiveis:
+    if os.path.exists(c):
+        CAMINHO_FINAL = c
+        break
+    
+# ==============================================================================
 # CARGA E TRATAMENTO DE DADOS (COM CACHE)
 # ==============================================================================
 @st.cache_data
 def carregar_e_tratar_dados():
-    # Carrega a base de dados
-    df = pd.read_csv("BaseVarejo/BaseVarejo.csv", encoding="utf-8", sep=";")
+    # Carrega a base de dados com o caminho resolvido
+    df = pd.read_csv(CAMINHO_FINAL, encoding="utf-8", sep=";")
     
     # 1. Remover colunas 'Unnamed'
     colunas_unnamed = [col for col in df.columns if "Unnamed" in col]
