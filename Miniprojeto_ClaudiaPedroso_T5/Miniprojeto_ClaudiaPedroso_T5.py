@@ -4,21 +4,24 @@
 import numpy as np
 import pandas as pd
 import re
-import matplotlib as plt
-from IPython.display import display
+import matplotlib.pyplot as plt
+import matplolib.grid as gridspec
 from datetime import datetime
 
-#Importando o arquivo BaseVarejo.csv
+#1. Importando o arquivo BaseVarejo.csv
 df_vendas = pd.read_csv("BaseVarejo/BaseVarejo.csv", encoding='utf-8', sep=';')
 
-# Exibição dos dados básicos (nº de registro, linhas, colunas e tipos de dados) 
+#2. Exibição dos dados básicos (nº de registro, linhas, colunas e tipos de dados) 
+print("Informações do DataFrame:")
 print(f"Número de registros: {len(df_vendas)}")
 print(f"Número de linhas e colunas: {df_vendas.shape}")
 
 print("\nPrimeiras 5 linhas:")
-display(df_vendas.head())
-display(df_vendas.tail())
+print(df_vendas.head())
+
+print("\nEstruturas e Tipos de Dados:")
 df_vendas.info()
+
 
 ### SPRINT 2: DIAGNÓSTICO E FUNÇÕES DE LIMPEZA
 
@@ -112,13 +115,13 @@ status_filhos = df_limpo['CL_FHL']
 
 status_filhos ={
   "Contagem de filhos": filhos.value_counts(),
-  "Média": filhos.mean(),   
-  "Mediana": filhos.median(),
-  "Desvio Padrão": filhos.std(),    
-  "Mínimo": filhos.min(),
-  "Máximo": filhos.max(),
-  "1º Quartil": filhos.quantile(0.25),
-  "3º Quartil": filhos.quantile(0.75),
+  "Média": status_filhos.mean(),   
+  "Mediana": status_filhos.median(),
+  "Desvio Padrão": status_filhos.std(),    
+  "Mínimo": status_filhos.min(),
+  "Máximo": status_filhos.max(),
+  "1º Quartil": status_filhos.quantile(0.25),
+  "3º Quartil": status_filhos.quantile(0.75),
 }
 
 df_stats = pd.DataFrame(
