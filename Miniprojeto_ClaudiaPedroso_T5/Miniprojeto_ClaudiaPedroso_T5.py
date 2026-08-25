@@ -104,50 +104,56 @@ print(f"Limite Superior (IQR): {limite_superior} | Total de Outliers: {total_out
 print("\n=== SPRINT 4: ESTATÍSTICA E PADRÕES DE CONSUMO ===")
 
 
+# 1. Tabela Estatística Descritiva da Coluna CL_FHL
 
-
-
-
-
-### Estatística Descritiva para coluna de filhos (CL_FHL)
-
-#CL_FHL (coluna nº de filhos) 
-
-status_filhos = df_limpo['CL_FHL']
+serie_filhos = df_limpo['CL_FHL']
 
 status_filhos ={
-  "Contagem de filhos": filhos.value_counts(),
-  "Média": status_filhos.mean(),   
-  "Mediana": status_filhos.median(),
-  "Desvio Padrão": status_filhos.std(),    
-  "Mínimo": status_filhos.min(),
-  "Máximo": status_filhos.max(),
-  "1º Quartil": status_filhos.quantile(0.25),
-  "3º Quartil": status_filhos.quantile(0.75),
+  "Contagem de filhos": serie_filhos.value_counts(),
+  "Média": serie_filhos.mean(),   
+  "Mediana": serie_filhos.median(),
+  "Desvio Padrão": serie_filhos.std(),    
+  "Mínimo": serie_filhos.min(),
+  "Máximo": serie_filhos.max(),
+  "1º Quartil": serie_filhos.quantile(0.25),
+  "3º Quartil": serie_filhos.quantile(0.75),
 }
 
 df_stats = pd.DataFrame(
-    list(status_filhos.items()), columns=['Parâmetro Estatístico', 'Valor']
-)
+    list(status_filhos.items()), columns=['Parâmetro Estatístico', 'Valor'])
+
+print("\nTabela Estatística Descritiva da Coluna 'CL_FHL' (Número de Filhos)")
 print(df_stats.to_string(index=False))
 
-# Agrupamento 1: Total de Compras e Média de Filhos por Gênero (Groupby)
-agrup_genero = (
-    df_limpo.groupby("CL_GENERO")
-    .agg(
-        Total_Transacoes=("CO_ID", "count"),
-        Media_Filhos=("CL_FHL", "mean"),
-    )
-    .reset_index()
+
+#2. Criação da Faixa Familiar (Perfil de Consumo) com base na quantidade de filhos
+df_limpo['PERFIL_Familiar'] = df_limpo['CL_FHL'].apply(
+    lambda x: 'Sem Filhos' if x == 0 else ('Com Filhos' if x > 0 else 'Não Informado') 
 )
 
-print("\nAgrupamento 1: Padrão de Compras por Gênero (groupby)")
-print(agrup_genero.to_string(index=False))
+#3. Cruzamento: Categorias Mais Consumidas por Perfil Familiar 
+if 'RP_CAT' in df_limpo.columns:
+    consumo_perfil = pd.crosstab(
+      df_limpo['PR_CAT'],
+      df_limpo['PERFIL_Familiar'],
+      normalize='columns')* 100
+    print('\n % de Consumo por Categoria e Perfil Familiar:')
+    print(consumo_perfil.round(2))
+    
+# Agrupamento por gênero: Total de Compras e Média de Filhos por Gênero (Groupby)
+if "CL_GENERO" in df_limpo.columns and "CO_ID" in df_limpo.columns:
+    agrup_genero = (
+      df_limpo.groupby("CL_GENERO")
+        .agg(
+        Total_Transacoes=("CO_ID", "count"),
+        Media_Filhos=("CL_FHL", "mean"),
+    ).reset_index()
+    print("\nAgrupamento por Gênero: Total de Compras e Média de Filhos")
+    print(agrup_genero.to_string(index=False))
 
-## Gráfico de barras para distribuição de clientes por número de filhos
+## 5. Visualização Gráfica
 
-import matplotlib.gridspec as gridspec ##procurei por itens de layout para gráfico e usei esse para melhorar a aparencia do gráfico
-
+## 1. Distribuição de clientes por número de filhos
 fig = plt.figure(figsize=(14, 7), dpi=100)
 gs = gridspec.GridSpec(2, 2, width_ratios=[1.8, 1], height_ratios=[1, 1])
 
@@ -157,15 +163,8 @@ ax_bar = fig.add_subplot(gs[:, 0])
 contagem = serie.value_counts().sort_index()
 cores = ['#8cb8d6', '#a58aa5', '#a1d49b', '#b58273', '#e89898']
 
-barras = ax_bar.bar(
-    contagem.index.astype(str),
-    contagem.values,
-    color=cores,
-    edgecolor='gray',
-    width=0.7,
-)
+barras = ax_bar.bar(contagem.index.astype(str), contagem.values, color=cores, edgecolor='gray', width=0.7)
 
-# Rótulos de dados sobre as barras
 for bar in barras:
   altura = bar.get_height()
   ax_bar.annotate(
@@ -178,37 +177,56 @@ for bar in barras:
       fontsize=10,
   )
 
-ax_bar.set_title(
-    "DISTRIBUIÇÃO DE CLIENTES POR NÚMERO DE FILHOS ('CL_FHL')",
+ax_bar.set_title("DISTRIBUIÇÃO DE CLIENTES POR NÚMERO DE FILHOS ('CL_FHL')",
     fontsize=12,
     fontweight='bold',
 )
-ax_bar.set_xlabel('NÚMERO DE FILHOS', fontsize=11)
-ax_bar.set_ylabel('NÚMERO DE CLIENTES', fontsize=11)
-ax_bar.grid(True, linestyle='-', alpha=0.6)
-
+ax_bar.set_xlabel('NÚMERO DE FILHOS', 
+    fontsize=11)
+ax_bar.set_ylabel('NÚMERO DE CLIENTES', 
+    fontsize=11)
+ax_bar.grid(True, 
+    linestyle='-', 
+    alpha=0.6)
+fig.tight_layout()
 fig.savefig("distribuicao_clientes_filhos.png", dpi=150)
 
-## Média e mediana da distruiçao de quantidade de filhos
 
-##calculos
+# Gráfico 2: Top Categorias por Perfil Familiar
+if 'PR_CAT' in df_limpo.columns
+    top_cats = df_limpo['PR_CAT'].value_counts().head(6).index
+    df_top_cats = df_limpo[df_limpo['PR_CAT'].isin(top_cats)]
+    
+    table_plot = df.crosstab(df_top_cats['PR_CAT'], df_top_cats['PERFIL_FAMILIAR'])
+    
+    fig2, ax2 = plt.subplots(figsize=(10, 5), dpi=100)
+    tabela_plot.plot(kind='bar', ax=ax2, colormap='viridis', edgecolor='black', width=0.7)
+    ax2.set_title("TOP CATEGORIAS DE PRODUTOS POR PERFIL FAMILIAR", fontsize=11, fontweight='bold')
+    ax2.set_xlabel("Categoria de Produto")
+    ax2.set_ylabel("Quantidade de Transações")
+    ax2.legend(title="Perfil Familiar")
+    ax2.grid(axis='y', linestyle='--', alpha=0.5)
+    plt.xticks(rotation=45, ha='right')
+    fig2.tight_layout()
+    fig2.savefig("consumo_categoria_perfil.png", dpi=150)
+    
+    
+
+# Gráfico 3: Comparativo Média e mediana 
+
 media = serie.mean()
 mediana = serie.median()
 
-##configuração gráfica
-
-fig, ax = plt.subplots(figsize=(8, 5), dpi=100)
-
+fig3, ax3 = plt.subplots(figsize=(8, 5), dpi=100)
 metricas = ['Média', 'Mediana']
-valores = [media, mediana]
+valores = [serie_filhos.mean(), serie_filhos.median()]
 cores = ['#2b5c8f', '#e26d5c']
-
-barras = ax.bar(metricas, valores, color=cores, width=0.4, edgecolor='black')
+barras3 = ax3.bar(metricas, valores, color=cores, width=0.4, edgecolor='black')
 
 # Exibir os valores numéricos em cima de cada barra
-for barra in barras:
+for barra in barras3:
   altura = barra.get_height()
-  ax.annotate(
+  ax3.annotate(
       f'{altura:.2f}',
       xy=(barra.get_x() + barra.get_width() / 2, altura),
       xytext=(0, 5),
@@ -220,16 +238,15 @@ for barra in barras:
   )
 
 # Ajustes visuais
-ax.set_title(
-    "Comparativo: Média vs Mediana (Coluna 'CL_FHL')",
+ax3.set_title("Comparativo: Média vs Mediana (Coluna 'CL_FHL')",
     fontsize=13,
     fontweight='bold',
 )
-ax.set_ylabel('Valor', fontsize=11)
-ax.set_ylim(0, max(valores) * 1.3)  # Espaço para o rótulo
+ax3.set_ylabel('Valor', fontsize=11)
+ax3.set_ylim(0, max(valores) * 1.3)  # Espaço para o rótulo
 ax.grid(axis='y', linestyle='--', alpha=0.7)
 
-# 4. Salvar na pasta 'Graficos'
+# Salvar na pasta 'Graficos'
 fig.savefig("distribuicao_qtd_filhos.png", dpi=150)
 
 
