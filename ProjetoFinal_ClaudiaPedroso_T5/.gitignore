@@ -1,5 +1,7 @@
 # Credenciais: NUNCA vão para o GitHub (o modelo é o .env.example)
 .env
+*.env
+**/.env
 
 # Dados baixados do Drive (centenas de MB) e arquivos compactados
 data/
