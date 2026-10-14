@@ -108,24 +108,20 @@ CREATE TABLE silver_viagem (
     valor_passagens DECIMAL(10,2),
     valor_devolucao DECIMAL(10,2),
     valor_outros_gastos DECIMAL(10,2),
-    valor_total DECIMAL(12,2),
-    duracao_dias INT,
-    CONSTRAINT pk_silver_viagem PRIMARY KEY (id_viagem),
-    CONSTRAINT chk_viagem_valor_diarias CHECK (valor_diarias >= 0) -- constraint 2
+    valor_total DECIMAL(12,2),   --calculada
+    duracao_dias INT,            -- calculada
+    PRIMARY KEY (id_viagem),
+    CONSTRAINT ck_viagem_valor_diarias CHECK (valor_diarias >= 0) -- constraint 2 com CHECK
 );
 
 CREATE TABLE silver_pagamento (
-    id_pagamento          SERIAL PRIMARY KEY,
-    id_viagem             VARCHAR(20) NOT NULL,
-    num_proposta          VARCHAR(20),
-    cod_orgao_superior    VARCHAR(20),
+    id_pagamento  SERIAL PRIMARY KEY,
+    id_viagem       VARCHAR(20) NOT NULL,
+    num_proposta    VARCHAR(20),
     nome_orgao_superior   VARCHAR(255),
-    cod_orgao_pagador     VARCHAR(20),
-    nome_orgao_pagador    VARCHAR(255),
-    cod_ug_pagadora       VARCHAR(20),
-    nome_ug_pagadora      VARCHAR(255),
-    tipo_pagamento        VARCHAR(50) NOT NULL,  -- constranint 2
-    valor                 DECIMAL(10,2) CHECK (valor >= 0), -- constraint 1
+    nome_ug_pagadora VARCHAR(255),
+    tipo_pagamento   VARCHAR(50) NOT NULL,  -- constranint 2
+    valor            DECIMAL(10,2) CHECK (valor >= 0), -- constraint 1
     CONSTRAINT fk_pagamento_viagem FOREIGN KEY (id_viagem) REFERENCES silver_viagem (id_viagem)
 );
 
@@ -157,6 +153,6 @@ CREATE TABLE silver_trecho (
     destino_cidade VARCHAR(80),
     meio_transporte VARCHAR(50),
     numero_diarias DECIMAL(10,2) CHECK (numero_diarias >= 0), -- constraint 1
-    CONSTRAINT fk_trecho_viagem FOREIGN KEY (id_viagem) REFERENCES silver_viagem(id_viagem),
-    CONSTRAINT uq_viagem_sequencia UNIQUE (id_viagem, sequencia_trecho) - -- constraint 2
+    CONSTRAINT fk_trecho_viagem FOREIGN KEY (id_viagem) REFERENCES silver_viagem (id_viagem),
+    CONSTRAINT uq_trecho_viagem_sequencia UNIQUE (id_viagem, sequencia_trecho) -- constraint 2: UNIQUE
 );
