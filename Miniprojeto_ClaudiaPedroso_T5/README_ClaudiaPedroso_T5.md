@@ -110,7 +110,7 @@ Ao final do projeto, espera-se obter:
 
 ---
 
-## 11. Autoria
+## 9. Autoria
 
 - Autora: Claudia Pedroso Ferreira
 - E-mail: claudinha08@gmail.com
